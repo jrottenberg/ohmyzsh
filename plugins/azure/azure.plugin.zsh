@@ -57,23 +57,22 @@ function _az-homebrew-installed() {
   fi
 }
 
-  # get az.completion.sh location from $PATH
-  _az_zsh_completer_path="$commands[az_zsh_completer.sh]"
+# get az.completion.sh location from $PATH
+_az_zsh_completer_path="$commands[az_zsh_completer.sh]"
 
-  # otherwise check common locations
-  if [[ -z $_az_zsh_completer_path ]]; then
-    # Homebrew
-    if _azcli-homebrew-installed; then
-      _az_zsh_completer_path=$_brew_prefix/libexec/bin/az.completion.sh
-    # Ubuntu
-    elif [[ -e /opt/az/bin/az.completion.sh ]]; then
-      _az_zsh_completer_path=/opt/az/bin/az.completion.sh
-    # RPM
-    else
-      _az_zsh_completer_path=/etc/bash_completion.d/azure-cli
-    fi
+# otherwise check common locations
+if [[ -z $_az_zsh_completer_path ]]; then
+  # Homebrew
+  if _az-homebrew-installed; then
+    _az_zsh_completer_path=$_brew_prefix/libexec/bin/az.completion.sh
+  # Ubuntu
+  elif [[ -e /opt/az/bin/az.completion.sh ]]; then
+    _az_zsh_completer_path=/opt/az/bin/az.completion.sh
+  # RPM
+  else
+    _az_zsh_completer_path=/etc/bash_completion.d/azure-cli
   fi
-
-  [[ -r $_az_zsh_completer_path ]] && source $_az_zsh_completer_path
-  unset _az_zsh_completer_path _brew_prefix
 fi
+
+[[ -r $_az_zsh_completer_path ]] && source $_az_zsh_completer_path
+unset _az_zsh_completer_path _brew_prefix
