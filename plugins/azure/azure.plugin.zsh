@@ -70,15 +70,12 @@ function az-homebrew-installed() {
     # Ubuntu
     elif [[ -e /opt/az/bin/az.completion.sh ]]; then
       _aws_zsh_completer_path=/opt/az/bin/az.completion.sh
-    # NixOS
-    elif [[ -e "${commands[aws]:P:h:h}/share/zsh/site-functions/aws_zsh_completer.sh" ]]; then
-      _aws_zsh_completer_path="${commands[aws]:P:h:h}/share/zsh/site-functions/aws_zsh_completer.sh"
     # RPM
     else
       _aws_zsh_completer_path=/etc/bash_completion.d/azure-cli
     fi
   fi
 
-  [[ -r $_aws_zsh_completer_path ]] && source $_aws_zsh_completer_path
-  unset _aws_zsh_completer_path _brew_prefix
+  [[ -r $_az_zsh_completer_path ]] && source $_az_zsh_completer_path
+  unset _az_zsh_completer_path _brew_prefix
 fi
