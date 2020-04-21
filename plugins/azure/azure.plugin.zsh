@@ -42,41 +42,35 @@ if [ "$SHOW_AZ_PROMPT" != false ]; then
 fi
 
 
-# Load awscli completions
+# Load az completions
+function _az-homebrew-installed() {
+  # check if Homebrew is installed
+  (( $+commands[brew] )) || return 1
 
-# AWS CLI v2 comes with its own autocompletion. Check if that is there, otherwise fall back
-if [[ -x /usr/local/bin/aws_completer ]]; then
-  autoload -Uz bashcompinit && bashcompinit
-  complete -C aws_completer aws
-else
-  function _awscli-homebrew-installed() {
-    # check if Homebrew is installed
-    (( $+commands[brew] )) || return 1
+  # speculatively check default brew prefix
+  if [ -h /usr/local/opt/az ]; then
+    _brew_prefix=/usr/local/opt/az
+  else
+    # ok, it is not in the default prefix
+    # this call to brew is expensive (about 400 ms), so at least let's make it only once
+    _brew_prefix=$(brew --prefix azure-cli)
+  fi
+}
 
-    # speculatively check default brew prefix
-    if [ -h /usr/local/opt/awscli ]; then
-      _brew_prefix=/usr/local/opt/awscli
-    else
-      # ok, it is not in the default prefix
-      # this call to brew is expensive (about 400 ms), so at least let's make it only once
-      _brew_prefix=$(brew --prefix awscli)
-    fi
-  }
-
-  # get aws_zsh_completer.sh location from $PATH
-  _aws_zsh_completer_path="$commands[aws_zsh_completer.sh]"
+  # get az.completion.sh location from $PATH
+  _az_zsh_completer_path="$commands[az_zsh_completer.sh]"
 
   # otherwise check common locations
-  if [[ -z $_aws_zsh_completer_path ]]; then
+  if [[ -z $_az_zsh_completer_path ]]; then
     # Homebrew
-    if _awscli-homebrew-installed; then
-      _aws_zsh_completer_path=$_brew_prefix/libexec/bin/aws_zsh_completer.sh
+    if _azcli-homebrew-installed; then
+      _az_zsh_completer_path=$_brew_prefix/libexec/bin/az.completion.sh
     # Ubuntu
     elif [[ -e /opt/az/bin/az.completion.sh ]]; then
-      _aws_zsh_completer_path=/opt/az/bin/az.completion.sh
+      _az_zsh_completer_path=/opt/az/bin/az.completion.sh
     # RPM
     else
-      _aws_zsh_completer_path=/etc/bash_completion.d/azure-cli
+      _az_zsh_completer_path=/etc/bash_completion.d/azure-cli
     fi
   fi
 
