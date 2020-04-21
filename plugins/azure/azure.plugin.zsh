@@ -75,7 +75,7 @@ function az-homebrew-installed() {
       _aws_zsh_completer_path="${commands[aws]:P:h:h}/share/zsh/site-functions/aws_zsh_completer.sh"
     # RPM
     else
-      _aws_zsh_completer_path=/usr/share/zsh/site-functions/aws_zsh_completer.sh
+      _aws_zsh_completer_path=/etc/bash_completion.d/azure-cli
     fi
   fi
 
