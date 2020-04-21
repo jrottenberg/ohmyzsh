@@ -32,13 +32,13 @@ function _az_subscriptions() {
 compctl -K _az_subscriptions azss
 
 # Az prompt
-function az_prompt_info() {
+function prompt_azure() {
   [[ ! -f "${AZURE_CONFIG_DIR:-$HOME/.azure/accessTokens.json}" ]] && return
-  echo "${ZSH_THEME_AZ_PREFIX:=<az:}$(azgs)${ZSH_THEME_AZ_SUFFIX:=>}"
+  echo "${ZSH_THEME_AZURE_PREFIX:=<az:}$(azgs)${ZSH_THEME_AZURE_SUFFIX:=>}"
 }
 
 if [ "$SHOW_AZ_PROMPT" != false ]; then
-  RPROMPT='$(az_prompt_info)'"$RPROMPT"
+  RPROMPT='$(prompt_azure)'"$RPROMPT"
 fi
 
 
